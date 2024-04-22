@@ -34,5 +34,5 @@ Mais on peut construire un tableau plus grand et plus impressionant avec
 
 13 10 8 7 3 2
 
-Résolution grâce à l'algorithme de la plus longue sous-suite croissante.
+Résolution grâce à l'algorithme de la plus longue sous-suite croissante, modifiée en conséquence.
 http://www.xavierdupre.fr/app/ensae_teaching_cs/helpsphinx/notebooks/td1a_plus_grande_somme_correction.html
