@@ -38,6 +38,8 @@ def plus_grande_sequence(input_file):
     with open('result.txt', 'w') as f:
         f.write(" ".join(map(str, [times[i] for i in S])))
 
+    print(f"La séquence décroissante la plus longue contient {len(S)} éléments.")
+
     return S
 
 longest_progression = plus_grande_sequence("data.txt")

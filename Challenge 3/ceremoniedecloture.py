@@ -1,64 +1,45 @@
-# On sépare les entrées et les sorties dans deux fichiers différents que l'on trie en ordre croissant
-def separate_entries_exits(input_file, entries_file, exits_file):
-    # Dictionnaires pour stocker les timestamps d'entrée et de sortie
-    entry_timestamps = {}
-    exit_timestamps = {}
 
-    # Lecture du fichier et stockage des données dans les dictionnaires
+def find_min_capacity(input_file):
+    # Lecture du fichier et stockage des données dans une liste
     with open(input_file, 'r') as file:
         lines = file.readlines()
 
+    # Stockage des timestamps d'entrée et de sortie dans deux listes distinctes
+    entries = []
+    exits = []
+
     for line in lines:
         athlete_id, entry, exit = line.strip().split(',')
-        entry_timestamps.setdefault(int(entry), []).append((int(athlete_id), int(exit)))
-        exit_timestamps.setdefault(int(exit), []).append((int(athlete_id), int(entry)))
+        entries.append((int(entry), athlete_id))
+        exits.append((int(exit), athlete_id))
 
     # Tri des timestamps d'entrée et de sortie par ordre croissant
-    sorted_entry_timestamps = sorted(entry_timestamps.items())
-    sorted_exit_timestamps = sorted(exit_timestamps.items())
+    entries.sort()
+    exits.sort()
 
-    # Écriture des timestamps triés dans les fichiers d'entrées et de sorties
-    with open(entries_file, 'w') as entries:
-        for timestamp, athletes in sorted_entry_timestamps:
-            for athlete, exit_time in athletes:
-                entries.write(f"{athlete},{timestamp},{exit_time}\n")
+    # Initialisation des compteurs
+    max_athletes = 0
+    current_athletes = set()
+    entry_index = 0
+    exit_index = 0
 
-    with open(exits_file, 'w') as exits:
-        for timestamp, athletes in sorted_exit_timestamps:
-            for athlete, entry_time in athletes:
-                exits.write(f"{athlete},{timestamp},{entry_time}\n")
+    # Parcours des timestamps pour déterminer le nombre maximal d'athlètes présents simultanément
+    while entry_index < len(entries) and exit_index < len(exits):
+        entry_time, entry_athlete = entries[entry_index]
+        exit_time, exit_athlete = exits[exit_index]
 
-def findMaxGuests(entries_file, exits_file):
-    with open(entries_file, 'r') as file:
-        arrl = [line.strip() for line in file]
-    with open(exits_file, 'r') as file:
-        exit = [line.strip() for line in file]
-    
-    n = len(arrl)
-
-    guests_in = 1
-    max_guests = 1
-    time = arrl[0]
-    i = 1
-    j = 0
- 
-    while (i < n and j < n):
-         
-        if (arrl[i] <= exit[j]):
-            guests_in = guests_in + 1
-            if(guests_in > max_guests):
-         
-                max_guests = guests_in
-                time = arrl[i]
-    
-            i = i + 1 
-     
+        if entry_time < exit_time:
+            current_athletes.add(entry_athlete)
+            max_athletes = max(max_athletes, len(current_athletes))
+            entry_index += 1
         else:
-            guests_in = guests_in - 1
-            j = j + 1
-     
-    print("Maximum Number of Guests =",
-           max_guests, "at time", time)
+            current_athletes.remove(exit_athlete)
+            exit_index += 1
 
-separate_entries_exits("data.txt", "entries.txt", "exits.txt")
-# findMaxGuests("entries.txt", "exits.txt")
+    return max_athletes
+
+# Utilisation de la fonction
+min_capacity = find_min_capacity("data.txt")
+
+# Affichage du résultat
+print("La capacité minimale du vestiaire est de :", min_capacity)
