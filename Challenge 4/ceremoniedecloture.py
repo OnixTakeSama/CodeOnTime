@@ -1,6 +1,8 @@
 import itertools
 
+# ---------------------------------------------------------------
 # DATASET 5 BEST SCORE
+# ---------------------------------------------------------------
 
 # def build_relay_teams(input_file, num_athletes_per_team, output_file):
 #     # Lecture des données des athlètes à partir du fichier
@@ -85,6 +87,7 @@ def build_relay_teams(input_file, num_athletes_per_team, output_file):
     for i, athlete in enumerate(athletes_data):
         teams[i % num_athletes_per_team].append(athlete)
 
+
     # Calcul des temps pour chaque équipe
     team_times = []
     for team in teams:
@@ -97,9 +100,8 @@ def build_relay_teams(input_file, num_athletes_per_team, output_file):
         team_time += team[-1][1]
         team_times.append(team_time)
 
-    # Calcul du temps minimum de la meilleure équipe et du temps maximum de la pire équipe
-    min_best_team_time = min(team_times)
     max_worst_team_time = max(team_times)
+    min_best_team_time = min(team_times)
 
     # Calcul de la différence de temps entre la meilleure équipe et la dernière
     time_difference = max_worst_team_time - min_best_team_time
@@ -112,20 +114,16 @@ def build_relay_teams(input_file, num_athletes_per_team, output_file):
     return min_best_team_time, max_worst_team_time, time_difference
 
 # Fichier contenant les données des athlètes
-input_file = "data5.txt"
+input_file = "data3.txt"
 
 # Fichier de sortie pour les compositions d'équipes
 output_file = "relay_teams.txt"
 
 # Taille des équipes
-num_athletes_per_team = 128
+num_athletes_per_team = 4
 
 # Construction des équipes et écriture dans le fichier de sortie
 min_best_team_time, max_worst_team_time, time_difference = build_relay_teams(input_file, num_athletes_per_team, output_file)
-
-# Affichage du temps minimum de la meilleure équipe et du temps maximum de la pire équipe
-print("Temps minimum de la meilleure équipe :", min_best_team_time)
-print("Temps maximum de la pire équipe :", max_worst_team_time)
 
 # Affichage de la différence de temps entre la meilleure équipe et la dernière
 print("Différence de temps :", time_difference)
